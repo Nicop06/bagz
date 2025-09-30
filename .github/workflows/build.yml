@@ -39,7 +39,7 @@ jobs:
           path: dist/bagz*.tar.gz
       - name: Upload Release Asset
         if: github.event_name == 'release' && github.event.action == 'created'
-        uses: softprops/action-gh-release@a74c266d4acb74d5b14599995014b2356c7342a8
+        uses: softprops/action-gh-release@6cbd405e2c4e67a21c47fa9e383d020e4e28b836
         with:
           files: dist/bagz*.tar.gz
 
@@ -71,6 +71,6 @@ jobs:
           path: wheelhouse/*.whl
       - name: Upload Release Asset
         if: github.event_name == 'release' && github.event.action == 'created'
-        uses: softprops/action-gh-release@a74c266d4acb74d5b14599995014b2356c7342a8
+        uses: softprops/action-gh-release@6cbd405e2c4e67a21c47fa9e383d020e4e28b836
         with:
           files: wheelhouse/*.whl
