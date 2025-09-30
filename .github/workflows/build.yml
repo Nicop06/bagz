@@ -1,4 +1,4 @@
-name: build
+name: Build
 
 on:
   push:
@@ -16,9 +16,9 @@ concurrency:
 
 jobs:
   sdist:
-    name: sdist
+    name: Source distribution
     runs-on: ubuntu-24.04
-    timeout-minutes: 30
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
       - uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b  # v5.3.0
@@ -37,6 +37,11 @@ jobs:
         with:
           name: bagz-sdist
           path: dist/bagz*.tar.gz
+      - name: Upload Release Asset
+        if: github.event_name == 'release' && github.event.action == 'created'
+        uses: softprops/action-gh-release@a74c266d4acb74d5b14599995014b2356c7342a8
+        with:
+          files: dist/bagz*.tar.gz
 
   bdist-wheel:
     name: Build wheels on ${{ matrix.os }} for python ${{ matrix.python-version }}
@@ -64,3 +69,8 @@ jobs:
         with:
           name: bagz-bdist-wheel-${{ matrix.os }}-${{ strategy.python-version }}-${{ strategy.job-index }}
           path: wheelhouse/*.whl
+      - name: Upload Release Asset
+        if: github.event_name == 'release' && github.event.action == 'created'
+        uses: softprops/action-gh-release@a74c266d4acb74d5b14599995014b2356c7342a8
+        with:
+          files: wheelhouse/*.whl
