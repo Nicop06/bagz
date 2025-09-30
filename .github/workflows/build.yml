@@ -37,6 +37,11 @@ jobs:
         with:
           name: bagz-sdist
           path: dist/bagz*.tar.gz
+      - name: Upload Release Asset
+        if: github.event_name == 'release' && github.event.action == 'created'
+        uses: softprops/action-gh-release@a74c266d4acb74d5b14599995014b2356c7342a8
+        with:
+          files: dist/bagz*.tar.gz
 
   bdist-wheel:
     name: Build wheels on ${{ matrix.os }} for python ${{ matrix.python-version }}
@@ -64,3 +69,8 @@ jobs:
         with:
           name: bagz-bdist-wheel-${{ matrix.os }}-${{ strategy.python-version }}-${{ strategy.job-index }}
           path: wheelhouse/*.whl
+      - name: Upload Release Asset
+        if: github.event_name == 'release' && github.event.action == 'created'
+        uses: softprops/action-gh-release@a74c266d4acb74d5b14599995014b2356c7342a8
+        with:
+          files: wheelhouse/*.whl
